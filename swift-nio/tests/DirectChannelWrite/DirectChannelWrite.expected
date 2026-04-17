@@ -1,0 +1,2 @@
+| DirectChannelWrite.swift:33:9:33:26 | call to write(_:) | This call returns an EventLoopFuture instead of using NIOAsyncChannel's AsyncWriter. Use NIOAsyncChannel to send data so that backpressure, cancellation and channel lifecycle are managed automatically. |
+| DirectChannelWrite.swift:37:9:37:34 | call to writeAndFlush(_:) | This call returns an EventLoopFuture instead of using NIOAsyncChannel's AsyncWriter. Use NIOAsyncChannel to send data so that backpressure, cancellation and channel lifecycle are managed automatically. |

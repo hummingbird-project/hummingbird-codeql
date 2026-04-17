@@ -20,7 +20,7 @@ import HummingbirdSources
 
 module UnboundedMetricDimensionsConfig implements DataFlow::ConfigSig {
   /** Sources: any HTTP request data entering the application via Hummingbird. */
-  predicate isSource(DataFlow::Node source) { source instanceof HummingbirdSource }
+  predicate isSource(DataFlow::Node source) { source instanceof VariableInput }
 
   /**
    * Sinks: the `dimensions:` argument of any swift-metrics metric constructor.

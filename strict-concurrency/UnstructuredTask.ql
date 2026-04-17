@@ -22,12 +22,12 @@ import swift
  * but is still unstructured (the child outlives the parent scope).
  * `Task.detached` is even more unstructured: it inherits neither.
  */
-private predicate isUnstructuredTaskDecl(AbstractFunctionDecl fd) {
+private predicate isUnstructuredTaskDecl(Function fd) {
   exists(NominalTypeDecl taskDecl |
     taskDecl.getName() = "Task" and
     taskDecl.getModule().getName() = "_Concurrency" and
     (
-      fd.(ConstructorDecl).getEnclosingDecl() = taskDecl
+      fd.(Initializer).getEnclosingDecl() = taskDecl
       or
       fd.getEnclosingDecl() = taskDecl and fd.getShortName() = "detached"
     )

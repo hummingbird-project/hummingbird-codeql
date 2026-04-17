@@ -1,0 +1,4 @@
+| DroppedContinuation.swift:16:11:18:5 | call to withCheckedContinuation(isolation:function:_:) | Continuation is never resumed. The suspended task will hang indefinitely, leaking its stack and any held resources. |
+| DroppedContinuation.swift:22:15:24:5 | call to withCheckedThrowingContinuation(isolation:function:_:) | Continuation is never resumed. The suspended task will hang indefinitely, leaking its stack and any held resources. |
+| DroppedContinuation.swift:28:11:30:5 | call to withUnsafeContinuation(isolation:_:) | Continuation is never resumed. The suspended task will hang indefinitely, leaking its stack and any held resources. |
+| DroppedContinuation.swift:34:11:36:5 | call to withCheckedContinuation(isolation:function:_:) | Continuation is never resumed. The suspended task will hang indefinitely, leaking its stack and any held resources. |

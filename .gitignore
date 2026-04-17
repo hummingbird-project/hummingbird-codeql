@@ -6,7 +6,7 @@
 ._*
 
 # Custom folder icons
-Icon
+Icon
 
 # Volume root files
 .DocumentRevisions-V100
@@ -52,3 +52,21 @@ playground.xcworkspace
 
 # Swift Package Manager
 # Package.resolved
+.build
+
+### CodeQL
+# Test results (generated, not source)
+*.actual
+
+# CodeQL test project databases (generated)
+*.testproj/
+
+# CodeQL compiled queries
+*.qlo
+*.trap
+*.trap.gz
+
+# CodeQL databases
+*.db
+databases/
+.vscode

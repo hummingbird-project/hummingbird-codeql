@@ -1,7 +1,8 @@
 ---
 library: false
 warnOnImplicitThis: false
-name: getting-started/strict-concurrency-swift
+name: getting-started/swift-nio-swift
 version: 1.0.0
+extractor: swift
 dependencies:
   codeql/swift-all: ^6.3.3

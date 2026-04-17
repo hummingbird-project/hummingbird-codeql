@@ -19,7 +19,7 @@ import codeql.swift.dataflow.FlowSources
  * Extend this class or use `RemoteFlowSource` directly in taint-tracking
  * configurations. Every concrete subclass below covers one distinct entry point.
  */
-abstract class HummingbirdSource extends RemoteFlowSource { }
+abstract class VariableInput extends RemoteFlowSource { }
 
 // ---------------------------------------------------------------------------
 // Request body
@@ -35,7 +35,7 @@ abstract class HummingbirdSource extends RemoteFlowSource { }
  * let body = request.body   // <-- source
  * ```
  */
-private class RequestBodyPropertySource extends HummingbirdSource {
+private class RequestBodyPropertySource extends VariableInput {
   RequestBodyPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember().(FieldDecl).hasQualifiedName("HummingbirdCore", "Request", "body") and
@@ -54,7 +54,7 @@ private class RequestBodyPropertySource extends HummingbirdSource {
  * let buffer = try await request.collectBody(upTo: maxSize)   // <-- source
  * ```
  */
-private class CollectBodyCallSource extends HummingbirdSource {
+private class CollectBodyCallSource extends VariableInput {
   CollectBodyCallSource() {
     exists(CallExpr ce |
       ce.getStaticTarget()
@@ -75,7 +75,7 @@ private class CollectBodyCallSource extends HummingbirdSource {
  * let dto = try await request.decode(as: MyDTO.self, context: context)   // <-- source
  * ```
  */
-private class RequestDecodeCallSource extends HummingbirdSource {
+private class RequestDecodeCallSource extends VariableInput {
   RequestDecodeCallSource() {
     exists(CallExpr ce |
       ce.getStaticTarget()
@@ -86,34 +86,6 @@ private class RequestDecodeCallSource extends HummingbirdSource {
   }
 
   override string getSourceType() { result = "Hummingbird decoded request body" }
-}
-
-// ---------------------------------------------------------------------------
-// HTTP method
-// ---------------------------------------------------------------------------
-
-/**
- * Access to `HTTPRequest.Method.rawValue` — the raw string of a non-standard
- * HTTP method sent by the client.
- *
- * `HTTPRequest.Method` is a plain struct (not an enum); all methods, standard
- * or custom, share the same type. Scoping to `.rawValue` targets only the code
- * paths that treat the method as an arbitrary string rather than comparing it
- * against a known constant (e.g. `request.method == .get`).
- *
- * ```swift
- * let m = request.method.rawValue   // <-- source
- * ```
- */
-private class RequestMethodRawValueSource extends HummingbirdSource {
-  RequestMethodRawValueSource() {
-    exists(MemberRefExpr mre |
-      mre.getMember().(FieldDecl).hasQualifiedName("HTTPTypes", "HTTPRequest.Method", "rawValue") and
-      this.asExpr() = mre
-    )
-  }
-
-  override string getSourceType() { result = "Hummingbird request method (raw)" }
 }
 
 // ---------------------------------------------------------------------------
@@ -130,7 +102,7 @@ private class RequestMethodRawValueSource extends HummingbirdSource {
  * let uri = request.uri   // <-- source
  * ```
  */
-private class RequestUriPropertySource extends HummingbirdSource {
+private class RequestUriPropertySource extends VariableInput {
   RequestUriPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember().(FieldDecl).hasQualifiedName("HummingbirdCore", "Request", "uri") and
@@ -148,7 +120,7 @@ private class RequestUriPropertySource extends HummingbirdSource {
  * let qs = request.uri.query   // <-- source
  * ```
  */
-private class UriQueryPropertySource extends HummingbirdSource {
+private class UriQueryPropertySource extends VariableInput {
   UriQueryPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember().(FieldDecl).hasQualifiedName("HummingbirdCore", "URI", "query") and
@@ -167,7 +139,7 @@ private class UriQueryPropertySource extends HummingbirdSource {
  * let params = request.uri.queryParameters   // <-- source
  * ```
  */
-private class UriQueryParametersPropertySource extends HummingbirdSource {
+private class UriQueryParametersPropertySource extends VariableInput {
   UriQueryParametersPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember()
@@ -188,7 +160,7 @@ private class UriQueryParametersPropertySource extends HummingbirdSource {
  * let filter = try request.uri.decodeQuery(as: FilterDTO.self, context: context)   // <-- source
  * ```
  */
-private class UriDecodeQueryCallSource extends HummingbirdSource {
+private class UriDecodeQueryCallSource extends VariableInput {
   UriDecodeQueryCallSource() {
     exists(CallExpr ce |
       ce.getStaticTarget()
@@ -216,7 +188,7 @@ private class UriDecodeQueryCallSource extends HummingbirdSource {
  * let params = context.parameters   // <-- source
  * ```
  */
-private class ContextParametersPropertySource extends HummingbirdSource {
+private class ContextParametersPropertySource extends VariableInput {
   ContextParametersPropertySource() {
     exists(MemberRefExpr mre |
       // `parameters` is declared both on CoreRequestContextStorage (stored) and
@@ -244,7 +216,7 @@ private class ContextParametersPropertySource extends HummingbirdSource {
  * let name = try context.parameters.require("name") // <-- source
  * ```
  */
-private class ParameterValueSource extends HummingbirdSource {
+private class ParameterValueSource extends VariableInput {
   ParameterValueSource() {
     exists(CallExpr ce, Method m |
       ce.getStaticTarget() = m and
@@ -272,7 +244,7 @@ private class ParameterValueSource extends HummingbirdSource {
  * let hdrs = request.headers   // <-- source
  * ```
  */
-private class RequestHeadersPropertySource extends HummingbirdSource {
+private class RequestHeadersPropertySource extends VariableInput {
   RequestHeadersPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember().(FieldDecl).hasQualifiedName("HummingbirdCore", "Request", "headers") and
@@ -298,7 +270,7 @@ private class RequestHeadersPropertySource extends HummingbirdSource {
  * let jar = request.cookies   // <-- source
  * ```
  */
-private class RequestCookiesPropertySource extends HummingbirdSource {
+private class RequestCookiesPropertySource extends VariableInput {
   RequestCookiesPropertySource() {
     exists(MemberRefExpr mre |
       mre.getMember().(FieldDecl).hasQualifiedName("Hummingbird", "Request", "cookies") and

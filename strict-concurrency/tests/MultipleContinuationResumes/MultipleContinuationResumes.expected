@@ -1,0 +1,3 @@
+| MultipleContinuationResumes.swift:16:11:19:5 | call to withCheckedContinuation(isolation:function:_:) | Continuation has multiple resume calls in the same scope. Each continuation must be resumed exactly once. |
+| MultipleContinuationResumes.swift:23:15:26:5 | call to withCheckedThrowingContinuation(isolation:function:_:) | Continuation has multiple resume calls in the same scope. Each continuation must be resumed exactly once. |
+| MultipleContinuationResumes.swift:30:11:33:5 | call to withUnsafeContinuation(isolation:_:) | Continuation has multiple resume calls in the same scope. Each continuation must be resumed exactly once. |
