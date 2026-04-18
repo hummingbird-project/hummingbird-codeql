@@ -55,6 +55,10 @@ playground.xcworkspace
 .build
 
 ### CodeQL
+# Query results (generated output)
+results/
+
+
 # Test results (generated, not source)
 *.actual
 
